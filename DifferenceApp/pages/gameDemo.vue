@@ -2,29 +2,39 @@
   <div>
     <h1>Différence Entre:</h1>
     <div class="contenair inline-flex mb-8">
-      <Button label="Crocodile" class="text-5xl p-button-raised p-button-secondary mr-5" />
-      <Button label="Alligator" class="text-5xl p-button-raised p-button-success" />
+      <Button label="Crocodile" class="text-5xl p-button-raised p-button-secondary mr-5"/>
+      <Button label="Alligator" class="text-5xl p-button-raised p-button-success"/>
 
     </div>
     <div class="">
       <span class="p-float-label">
-        <InputText id="username" v-model="value2" type="text"  class="mb-3 mt-5"></InputText>
+        <InputText id="username" v-model="value2" type="text" class="mb-3 mt-5"></InputText>
         <label for="username">Entrer une différence</label>
       </span>
-<h3>Sélectioner un type de relation </h3>
-      <AutoComplete v-model="selectedItem" :suggestions="filteredItems" @complete="searchItems" :virtualScrollerOptions="{ itemSize: 38 }" optionLabel="label" dropdown />
-      <Button label="Valider" class="text-5xl p-button-raised p-button-danger mr-5 block mt-8"  />
+      <h3>Sélectioner un type de relation </h3>
+      <AutoComplete v-model="selectedItem" :suggestions="filteredItems" @complete="searchItems"
+                    :virtualScrollerOptions="{ itemSize: 38 }" optionLabel="label" dropdown/>
+      <Button label="Valider" class="text-5xl p-button-raised p-button-danger mr-5 block mt-8"/>
     </div>
-    </div>
+  </div>
 </template>
 
-<script>
 
+<script setup>
+const response = useFetch("https://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=crocodile&rel=");
+console.log(response);
+</script>
+
+<script>
+//import {Cheerio} from "cheerio";
+//import async from "async";
+console.log("Testtestetesttest");
 import AutoComplete from "primevue/autocomplete";
 
 export default {
 
-  components : {
+
+  components: {
     AutoComplete
   },
 
@@ -33,9 +43,9 @@ export default {
       selectedItem: null,
       filteredItems: null,
       items: [
-        { label: 'Lieu', value: 'Lieu' },
-        { label: 'Caractéristique', value: 'Caractéristique' },
-       ]
+        {label: 'Lieu', value: 'Lieu'},
+        {label: 'Caractéristique', value: 'Caractéristique'},
+      ]
     }
   },
 
@@ -45,7 +55,7 @@ export default {
       let query = event.query;
       let filteredItems = [];
 
-      for(let i = 0; i < this.items.length; i++) {
+      for (let i = 0; i < this.items.length; i++) {
         let item = this.items[i];
         if (item.label.toLowerCase().indexOf(query.toLowerCase()) === 0) {
           filteredItems.push(item);
@@ -53,25 +63,9 @@ export default {
       }
       this.filteredItems = filteredItems;
     },
-
-    fetchURLWorld(){
-      fetch('https://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=voiture&rel=&relin=norelin')
-          .then(response => response.text())
-          .then(html => {
-            console.log(html); // raw HTML content of the webpage
-          })
-          .catch(error => {
-            console.error('Error fetching webpage:', error);
-          });
-    }
-
   }
 }
 
 </script>
 
-<style scoped>
-
-
-
-</style>
+<style scoped></style>

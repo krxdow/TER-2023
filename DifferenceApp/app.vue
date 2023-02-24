@@ -1,19 +1,14 @@
-
 <template>
-  <div >
-    <NuxtPage />
+  <div>
+    <NuxtPage/>
   </div>
 </template>
 
 <script>
 
-export default {
+export default {};
 
-};
-
-</script >
-
-
+</script>
 
 
 <script setup>
