@@ -17,7 +17,6 @@
 <script>
 import NuxtLink from "#app/components/nuxt-link.mjs";
 
-console.log("Testtestetesttest");
 
 export default {
   computed: {

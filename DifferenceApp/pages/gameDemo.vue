@@ -2,8 +2,8 @@
   <div>
     <h1>Différence Entre:</h1>
     <div class="contenair inline-flex mb-8">
-      <Button label="Crocodile" class="text-5xl p-button-raised p-button-secondary mr-5"/>
-      <Button label="Alligator" class="text-5xl p-button-raised p-button-success"/>
+      <Button  class="text-5xl p-button-raised p-button-secondary mr-5">{{firsTerme}}</Button>
+      <Button  class="text-5xl p-button-raised p-button-success">{{secondTerme}}</Button>
 
     </div>
     <div class="">
@@ -21,25 +21,35 @@
 
 
 <script setup>
-const response = useFetch("https://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=crocodile&rel=");
-console.log(response);
+
 </script>
 
+
+
 <script>
-//import {Cheerio} from "cheerio";
-//import async from "async";
-console.log("Testtestetesttest");
+
 import AutoComplete from "primevue/autocomplete";
+import fetch from "node-fetch";
+import * as cheerio from "cheerio";
+
+
+const response = await fetch('https://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=crocodile&rel=&relin=norelin');
+const body = await response.text();
+let $ = cheerio.load((body));
+
+const selected = $('div code').html();
+console.log("debug:",selected);
 
 export default {
-
-
   components: {
     AutoComplete
   },
 
   data() {
     return {
+      firsTerme:'Crocodile' ,
+      secondTerme: 'Crocodile',
+
       selectedItem: null,
       filteredItems: null,
       items: [
