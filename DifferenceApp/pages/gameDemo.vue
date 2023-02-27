@@ -66,17 +66,52 @@ const selected = $("div code").html(); //cherche dans le code source, la balise 
 //console.log("debug:", selected); //afficher ce qu'il y a dessus
 //console.log("\n\n");
 
-//Ecriture dans un texte
+// Ecriture dans un texte
 const fs = require("fs");
 fs.writeFile("./selected.txt", selected, function (err) {
   if (err) {
-    console.log(err);
+    console.error(err);
+    return;
   } else {
     console.log(
       "\n\nLes données ont été écrites dans le fichier selected.txt\n\n"
     );
   }
 });
+
+// Lecture du fichier pour le parser
+fs.readFile("./selected.txt", "utf8", (err, data) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+
+  const lines = data.split("\n");
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // On ignore les commentaires
+    if (line.startsWith("//")) {
+      const part = line.split(":")[1].trim();
+      console.log(line);
+    }
+
+    // On igonre les lignes <def></def>
+    if (line.startsWith("<def>")) {
+      // On boucle jusqu'à la fin du commentaire
+      while (!lines[i].trim().endsWith("</def>")) {
+        i++;
+      }
+      continue;
+    }
+  }
+  // faire quelque chose avec la ligne
+});
+
+/////////////
+// DONNEES //
+/////////////
 
 export default {
   components: {
