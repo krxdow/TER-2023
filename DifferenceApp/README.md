@@ -8,12 +8,14 @@ Make sure to install the dependencies:
 
 ```bash
 # yarn
+npm install -g yarn
 yarn install
 
 # npm
 npm install
 
 # pnpm
+npm install -g pnpm
 pnpm install
 ```
 
