@@ -40,12 +40,12 @@ CREATE TABLE Joueur (
 
 
 CREATE TABLE Parties (
-    id_partie_creer INT(100)  NOT NULL AUTO_INCREMENT,
+    id_partie INT(100) NOT NULL AUTO_INCREMENT,
 	idEntite1 INT(100),
 	idEntite2 INT(100),
     idJoueur INT(100),
 	nb_joueur INT(100),
-	PRIMARY KEY (id_partie_creer),
+	PRIMARY KEY (id_partie),
 	FOREIGN KEY (idEntite1) REFERENCES Entites(id_entite),
 	FOREIGN KEY (idEntite2) REFERENCES Entites(id_entite),
 	FOREIGN KEY (idJoueur) REFERENCES Joueur(id_joueur)
@@ -57,16 +57,17 @@ CREATE TABLE RelationInPartie (
 	idPartie INT(100),
     PRIMARY KEY (idRelation, idPartie),
 	FOREIGN KEY (idRelation) REFERENCES Relations(id_relation),
-	FOREIGN KEY (idPartie) REFERENCES Parties(id_partie_creer)
+	FOREIGN KEY (idPartie) REFERENCES Parties(id_partie)
 );
 
 
 CREATE TABLE Jouer (
 	idPartieCreer INT(100),
 	idJoueur INT(100),
-	is_finie INT(1),    -- boolean
+	is_finie INT(1),    -- boolean qui indique que la partie est fini, en cours ou finie mais pas decompter totalement
+	pourcentage INT(100),
 	point_gagne INT(100),
 	PRIMARY KEY (idPartieCreer, idJoueur),
-	FOREIGN KEY (idPartieCreer) REFERENCES Parties(id_partie_creer),
+	FOREIGN KEY (idPartieCreer) REFERENCES Parties(id_partie),
 	FOREIGN KEY (idJoueur) REFERENCES Joueur(id_joueur)
 );
