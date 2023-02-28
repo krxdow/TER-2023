@@ -12,9 +12,8 @@
     <div class="">
       <span class="p-float-label">
         <h3 class="mt-3">Entrer une différence</h3>
-        <InputText id="username" v-model="value2" type="text" class="mb-6 mt-3"
-          >Entrez un caractere</InputText
-        >
+        <InputText id="username" v-model="value2" class="mb-6 mt-3" type="text">
+          Entrez un caractere</InputText>
       </span>
       <h3>Sélectioner un type de relation</h3>
       <AutoComplete
@@ -41,11 +40,10 @@
   </div>
 </template>
 
-<script setup></script>
+
 
 <script>
 import AutoComplete from "primevue/autocomplete";
-import fetch from "node-fetch";
 import * as cheerio from "cheerio";
 
 ////////////
@@ -53,18 +51,22 @@ import * as cheerio from "cheerio";
 ////////////
 
 // Lien vers reseauDUMP
-const response = await fetch(
-  "https://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=crocodile&rel=&relin=norelin"
+let response = await fetch(
+    "https://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=crocodile&rel=&relin=norelin", {
+      mode: 'no-cors',
+    }
 );
+console.log(response)
 
 // Recuperation des données de reseauDump
-const body = await response.text(); //recupere les données en brut du site
+const body = await response; //recupere les données en brut du site
 let $ = cheerio.load(body); //mettre dans un objet pour pouvoir le manipuler
 
 // Selection des données du site
-const selected = $("div code").html(); //cherche dans le code source, la balise code pour pouvoir recuperer ce qu'il y a dedans
-//console.log("debug:", selected); //afficher ce qu'il y a dessus
+const selected = $("div code").html(); //cherche dans le code source, la balise code pour pouvoir recuperer ce qu'il y a dedans*/
+console.log("debug:", selected); //afficher ce qu'il y a dessus
 //console.log("\n\n");
+
 
 // Ecriture dans un texte
 const fs = require("fs");
@@ -109,6 +111,7 @@ fs.readFile("./selected.txt", "utf8", (err, data) => {
   // faire quelque chose avec la ligne
 });
 
+
 /////////////
 // DONNEES //
 /////////////
@@ -120,14 +123,14 @@ export default {
 
   data() {
     return {
+      response: null,
       firsTerme: "Crocodile",
       secondTerme: "Aligator",
-
       selectedItem: null,
       filteredItems: null,
       items: [
-        { label: "Lieu", value: "Lieu" },
-        { label: "Caractéristique", value: "Caractéristique" },
+        {label: "Lieu", value: "Lieu"},
+        {label: "Caractéristique", value: "Caractéristique"},
       ],
     };
   },

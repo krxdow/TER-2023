@@ -8,25 +8,24 @@ import * as cheerio from 'cheerio';
 
 export default defineNuxtConfig({
 
-
-
-
-        routeRules : {
-            '/_nuxt/**': { headers: { 'access-control-allow-methods': 'GET' } },
-            '/api/v1/**': { cors: true},
-            '/**': { cors: true, headers: { 'Access-Control-Allow-Origin': '*' } }},
-
-
+    routeRules: {
+        '/_nuxt/**': {headers: {'access-control-allow-methods': 'GET'}},
+        '/api/v1/**': {cors: true},
+        '/**': {
+            cors: true,
+            headers: {'Access-Control-Allow-Origin': '*', 'access-control-allow-methods': 'GET'}
+        }
+    },
 
     css: [
-            'primevue/resources/themes/soho-dark/theme.css',
-            'primevue/resources/primevue.css',
-            'primeicons/primeicons.css',
-            'primeflex/primeflex.css'
+        'primevue/resources/themes/soho-dark/theme.css',
+        'primevue/resources/primevue.css',
+        'primeicons/primeicons.css',
+        'primeflex/primeflex.css'
 
-        ],
-        build: {
-            transpile: ['primevue']
+    ],
+    build: {
+        transpile: ['primevue']
         },
         ssr: true,
   }
