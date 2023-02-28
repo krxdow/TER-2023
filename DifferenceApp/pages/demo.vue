@@ -5,33 +5,58 @@
       <div class="flex flex-column align-items-center">
         <h1>Différence Entre:</h1>
         <div class="contenair inline-flex mb-8">
-          <Button class="text-5xl p-button-raised p-button-secondary mr-5">{{ firsTerme }}</Button>
-          <Button class="text-5xl p-button-raised p-button-success">{{ secondTerme }}</Button>
+          <Button class="text-5xl p-button-raised p-button-secondary mr-5">{{
+            firsTerme
+          }}</Button>
+          <Button class="text-5xl p-button-raised p-button-success">{{
+            secondTerme
+          }}</Button>
         </div>
         <div class="">
           <form @submit.prevent="sumitForm">
             <span class="p-float-label">
-              <InputText id="username" v-model="inputUser" class="mb-3 mt-5" type="text"></InputText>
-        <label for="username">Entrer une différence</label>
-      </span>
-            <h3>Sélectioner un type de relation </h3>
-            <AutoComplete v-model="selectedItem" :suggestions="filteredItems" :virtualScrollerOptions="{ itemSize: 38 }"
-                          dropdown optionLabel="label" @complete="searchItems"/>
-            <Button class="text-5xl p-button-raised p-button-danger mr-5 block mt-8" label="Valider" type="submit"/>
+              <InputText
+                id="username"
+                v-model="inputUser"
+                class="mb-3 mt-5"
+                type="text"
+              ></InputText>
+              <label for="username">Entrer une différence</label>
+            </span>
+            <h3>Sélectioner un type de relation</h3>
+            <AutoComplete
+              v-model="selectedItem"
+              :suggestions="filteredItems"
+              :virtualScrollerOptions="{ itemSize: 38 }"
+              dropdown
+              optionLabel="label"
+              @complete="searchItems"
+            />
+            <Button
+              class="text-5xl p-button-raised p-button-danger mr-5 block mt-8"
+              label="Valider"
+              type="submit"
+            />
           </form>
         </div>
       </div>
     </div>
 
-    <div class="col  border-round border-1 border-dotted flex flex-column justify-center align-items-center">
+    <div
+      class="col border-round border-1 border-dotted flex flex-column justify-center align-items-center"
+    >
       <h2>différence entrée</h2>
       <div class="card">
-        <div class="flex flex-wrap md:justify-content-between justify-content-center card-container blue-container">
+        <div
+          class="flex flex-wrap md:justify-content-between justify-content-center card-container blue-container"
+        >
           <div>
             <ul>
               <li v-for="item in listItemOfUser" :key="item">
                 {{ item }}
-                <Button class="p-button-icon-bottom" @click="removeTodo(item)">X</Button>
+                <Button class="p-button-icon-bottom" @click="removeTodo(item)"
+                  >X</Button
+                >
               </li>
             </ul>
           </div>
@@ -43,7 +68,7 @@
 
 <script>
 import AutoComplete from "primevue/autocomplete";
-import Listbox from 'primevue/listbox';
+import Listbox from "primevue/listbox";
 import * as cheerio from "cheerio";
 
 ////////////
@@ -52,9 +77,10 @@ import * as cheerio from "cheerio";
 
 // Lien vers reseauDUMP
 let response = await fetch(
-    "https://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=crocodile&rel=&relin=norelin", {
-      mode: 'no-cors'
-    }
+  "https://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel=crocodile&rel=&relin=norelin",
+  {
+    mode: "no-cors",
+  }
 );
 // Recuperation des données de reseauDump
 const body = await response.text(); //recupere les données en brut du site
@@ -112,9 +138,8 @@ fs.readFile("./selected.txt", "utf8", (err, data) => {
 // DONNEES //
 /////////////
 
-
 export default {
-  components: {AutoComplete, Listbox},
+  components: { AutoComplete, Listbox },
   name: "demo",
 
   watch: {},
@@ -126,28 +151,26 @@ export default {
       listItemOfUser: [],
       selectedCity: ["null", "dfdf"],
       cities: [
-        {name: 'New York', code: 'NY'},
-        {name: 'Rome', code: 'RM'},
-        {name: 'London', code: 'LDN'},
-        {name: 'Istanbul', code: 'IST'},
-        {name: 'Paris', code: 'PRS'}
+        { name: "New York", code: "NY" },
+        { name: "Rome", code: "RM" },
+        { name: "London", code: "LDN" },
+        { name: "Istanbul", code: "IST" },
+        { name: "Paris", code: "PRS" },
       ],
 
       inputUser: null,
-      firsTerme: 'Crocodile',
-      secondTerme: 'Crocodile',
+      firsTerme: "Crocodile",
+      secondTerme: "Crocodile",
       selectedItem: null,
       filteredItems: null,
       items: [
-        {label: 'Lieu', value: 'Lieu'},
-        {label: 'Caractéristique', value: 'Caractéristique'},
-      ]
-    }
+        { label: "Lieu", value: "Lieu" },
+        { label: "Caractéristique", value: "Caractéristique" },
+      ],
+    };
   },
 
-
   methods: {
-
     searchItems(event) {
       //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
       let query = event.query;
@@ -162,21 +185,17 @@ export default {
       this.filteredItems = filteredItems;
     },
     sumitForm() {
-      this.listItemOfUser.push(this.$data.inputUser)
-      this.inputUser = null
-      console.log("inputUser", this.inputUser)
-      console.log("Liste Item", this.listItemOfUser)
+      this.listItemOfUser.push(this.$data.inputUser);
+      this.inputUser = null;
+      console.log("inputUser", this.inputUser);
+      console.log("Liste Item", this.listItemOfUser);
     },
 
     removeTodo(item) {
-      this.listItemOfUser = this.listItemOfUser.filter((t) => t !== item)
-    }
-
-  }
-}
-
+      this.listItemOfUser = this.listItemOfUser.filter((t) => t !== item);
+    },
+  },
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
