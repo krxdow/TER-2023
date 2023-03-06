@@ -6,3 +6,7 @@ node_modules
 .output
 .env
 dist
+/.idea/*
+/cors.js
+/.idea/dictionaries/ludow.xml
+/yarn.lock
