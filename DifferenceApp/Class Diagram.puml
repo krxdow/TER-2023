@@ -1,0 +1,48 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+!include https://raw.githubusercontent.com/plantuml/plantuml/master/themes/puml-theme-mars.puml
+
+abstract class "Users" as u1{
+-id: Integer
+-first-name: String
+-last-name: String
+-born: Date
+-email: String
+}
+
+abstract class "Users" as u2{}
+
+class Player{
+-status: Boolean
+}
+Class Admin{}
+
+abstract Game{
+-id: Integer
+
+-first-term: String
+-first-term-rel: String
+-first-term-value: String
+
+-second-term: String
+-second-term-rel: String
+-second-term-value: String
+}
+
+class GamesPlayed{
+-Id: Integer
+-Startplay: Date
+-Score: Integer
+}
+
+
+ u1 <|-- Player
+ u1 <|--Admin
+u1 "1..*"  o-- "1"Game: create >
+
+Game "*" - "*"Player : play <
+(Player, Game)"*" --  GamesPlayed
+@enduml
+
+@enduml
