@@ -1,6 +1,8 @@
 <template>
 
+<MyMenuComp/>
   <div class="">
+
     <h1>Création de partie</h1>
     <h2 class="">Entrer deux termes à comparer</h2>
 
@@ -39,6 +41,13 @@
 
 
 <script setup>
+
+definePageMeta({
+  middleware: 'auth'
+})
+
+
+import MyMenuComp from "~/components/menuBar.vue";
 import * as cheerio from "cheerio";
 
 const message = "Terme non présent dans Rezo"
@@ -104,47 +113,19 @@ watch(secondTerme, async (word, old) => {
 export default {
   name: "partycreation",
 
+
   data() {
     return {
-
-      test: null,
-      secondTermeValue: null,
-
-      selectedItem: null,
-      filteredItems: null,
-      items: Array.from({length: 1000}, (_, i) => ({label: `Item #${i}`, value: i})),
-
-      selectedCity: null,
-
       cities: [
         "lieux",
         "caractéristique",
         "bute",
         "appartient"
       ],
-
-      //   message: "Terme non valide dans RezoDump",
-      buttonText: "Show message",
-
-      responseHTML: null
-
     }
   },
 
-  methods: {
-    searchItems(event) {
-      //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-      let query = event.query;
-      let filteredItems = [];
-      for (let i = 0; i < 10; i++) {
-        let item = this.items[i];
-        if (item.label.toLowerCase().indexOf(query.toLowerCase()) === 0) {
-          filteredItems.push(item);
-        }
-      }
-      this.filteredItems = filteredItems;
-    }
-  },
+  methods: {},
 
 }
 </script>
