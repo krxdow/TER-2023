@@ -1,6 +1,5 @@
 <template>
-
-  <div class=" flex  align-content-center justify-content-center ">
+  <div class="flex flex-column  align-items-center">
     <h1>Trouver Les differences !</h1>
     <ul class="list-none ">
       <li class="">
