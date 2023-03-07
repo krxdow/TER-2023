@@ -11,7 +11,7 @@ abstract class "Users" as u1{
 -email: String
 }
 
-abstract class "Users" as u2{}
+/'abstract class "Users" as u2{}'/
 
 class Player{
 -status: Boolean
@@ -31,9 +31,9 @@ abstract Game{
 }
 
 class GamesPlayed{
--Id: Integer
--Startplay: Date
--Score: Integer
+-id: Integer
+-startplay: Date
+-score: Integer
 }
 
 
