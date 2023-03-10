@@ -8,11 +8,13 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@sidebase/nuxt-auth": "^0.4.3",
     "nuxt": "^3.2.2"
   },
   "dependencies": {
     "@sfxcode/nuxt-primevue": "^1.0.0",
     "cheerio": "^1.0.0-rc.12",
+    "next-auth": "^4.20.1",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
     "primevue": "^3.23.0",

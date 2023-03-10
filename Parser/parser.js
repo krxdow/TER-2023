@@ -30,7 +30,7 @@ fs.writeFile("./selected.txt", selected, function (err) {
   }
 });
 */
-fs.readFile("selected.txt", "utf8", (err, data) => {
+fs.readFile("selected_js.txt", "utf8", (err, data) => {
   if (err) {
     console.error(err);
     return;
