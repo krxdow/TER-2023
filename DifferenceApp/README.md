@@ -19,6 +19,14 @@ npm install -g pnpm
 pnpm install
 ```
 
+## Si problème de @side
+
+```bash
+npm i -D @sidebase/nuxt-auth
+yarn add next-auth
+npm i
+```
+
 ## Development Server
 
 Start the development server on http://localhost:3000
