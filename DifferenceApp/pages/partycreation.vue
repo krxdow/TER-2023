@@ -2,15 +2,17 @@
   <MyMenuComp />
   <div class="">
     <h1>Création de partie</h1>
-    <h2 class="">Entrer deux termes à comparer</h2>
+    <div class="flex flex-column align-items-center">
+      <h2 class="">Entrer deux termes à comparer</h2>
+    </div>
 
     <div class="grid">
-      <div class="col flex flex-column align-items-center">
+      <div class="col flex flex-column">
         <InputText
           id="firstTerme"
           v-model="firstTerme"
           :class="{ 'p-invalid': isActiveErreur1 }"
-          class="block mb-5"
+          class="block mb-5 ml-10"
           placeholder="Premier Terme"
           type="text"
           @input=""
@@ -23,26 +25,16 @@
         >
 
         <Dropdown
-          v-model="selectedCity"
-          :options="cities"
-          class="mb-5"
+          v-model="selectedCate"
+          :options="caract"
+          class="mb-5 ml-10"
           placeholder="Selection Type de relation"
         />
-        <!--v-model : sauvegarde dans la variable -->
-        <InputText
-          id="firstTermeValue"
-          v-model="firstTermeValue"
-          class="block"
-          placeholder="Type valeur"
-          type="text"
-        />
       </div>
 
-      <div class="col flex flex-column align-items-center">
-        <Button class="mr-3" label="Validé la différence" />
-      </div>
+      <div class="col flex flex-column"></div>
 
-      <div class="col flex flex-column align-items-center">
+      <div class="col flex flex-column">
         <InputText
           id="secondTerme"
           v-model="secondTerme"
@@ -59,23 +51,137 @@
         >
 
         <Dropdown
-          v-model="selectedCity"
-          :options="cities"
+          v-model="selectedCate"
+          :options="caract"
           class="mb-5"
           placeholder="Selection Type de relation"
         />
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="col flex flex-column">
+        <!--v-model : sauvegarde dans la variable -->
+        <InputText
+          id="firstTermeValue"
+          v-model="firstTermeValue"
+          class="mb-5 block ml-10"
+          placeholder="Type valeur"
+          type="text"
+        />
+      </div>
+
+      <div class="col flex flex-column align-items-center">
+        <Button
+          class=""
+          label="Validé la différence"
+          type="submit"
+          @click="submitForm()"
+        />
+      </div>
+
+      <div class="col flex flex-column">
         <InputText
           id="secondTermeValue"
           v-model="secondTermeValue"
-          class="block"
+          class="mb-5 block"
           placeholder="Type valeur"
           type="text"
         />
       </div>
     </div>
 
-    <div class="flex justify-content-center">
-      <Button class="ml-3" label="Validé la partie" />
+    <div class="grid">
+      <div
+        class="col mr-5 border-round border-1 border-dotted flex flex-column justify-center"
+      >
+        <h3>Liste pour 1er terme :</h3>
+        <div class="card">
+          <div
+            class="flex flex-wrap md:justify-content-between justify-content-center card-container blue-container"
+          >
+            <div>
+              <ul>
+                <li
+                  v-for="item in listFirstItemOfUser"
+                  :key="item"
+                  style="display: flex; align-items: center"
+                >
+                  <span
+                    :style="{ color: item.includes('//') ? 'green' : 'red' }"
+                    >{{ item }}</span
+                  >
+                  <Button
+                    class="p-button-icon-bottom"
+                    style="
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      width: 25px;
+                      height: 25px;
+                      border-radius: 50%;
+                      background-color: blueviolet;
+                      color: black;
+                      border: none;
+                      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+                      cursor: pointer;
+                    "
+                    @click="removeTodoFirst(item)"
+                    >X</Button
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col flex flex-column justify-center align-items-center">
+        <Button class="" label="Validé la partie" />
+      </div>
+      <div
+        class="col ml-5 border-round border-1 border-dotted flex flex-column justify-center"
+      >
+        <h3>Liste pour 2nd terme :</h3>
+        <div class="card">
+          <div
+            class="flex flex-wrap md:justify-content-between justify-content-center card-container blue-container"
+          >
+            <div>
+              <ul>
+                <li
+                  v-for="item in listSecondItemOfUser"
+                  :key="item"
+                  style="margin-rigth: 10px; display: flex; align-items: center"
+                >
+                  <span
+                    :style="{ color: item.includes('//') ? 'green' : 'red' }"
+                  >
+                    {{ item }}
+                  </span>
+                  <Button
+                    class="margin-left:10px p-button-icon-bottom"
+                    style="
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      width: 25px;
+                      height: 25px;
+                      border-radius: 50%;
+                      background-color: blueviolet;
+                      color: black;
+                      border: none;
+                      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+                      cursor: pointer;
+                    "
+                    @click="removeTodoSecond(item)"
+                    >X</Button
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -153,7 +259,7 @@ watch(secondTerme, async (word, old) => {
       isActiveErreur2.value = true;
       showMessageError2.value = true;
     } else {
-      showMessageError.value = false;
+      showMessageError2.value = false;
       isActiveErreur2.value = false;
     }
   }
@@ -166,11 +272,74 @@ export default {
 
   data() {
     return {
-      cities: ["lieux", "caractéristique", "bute", "appartient"],
+      caract: ["lieux", "caractéristique", "bute", "appartient"],
+      listFirstItemOfUser: [],
+      listSecondItemOfUser: [],
+      firstTerme: null,
+      firstTermeValue: null,
+      secondTerme: null,
+      secondTermeValue: null,
     };
   },
 
-  methods: {},
+  methods: {
+    //méthode pour affiche les éléments qu'on vient de rentrer
+    submitForm() {
+      //Promleme si on met pas de truc en plus
+      if (this.$data.firstTermeValue != null) {
+        this.listFirstItemOfUser.push(
+          this.$data.firstTerme + " // " + this.$data.firstTermeValue
+        );
+        this.listSecondItemOfUser.push(
+          this.$data.secondTerme + " \\\\ " + this.$data.firstTermeValue
+        );
+      }
+      if (this.$data.secondTermeValue != null) {
+        this.listFirstItemOfUser.push(
+          this.$data.firstTerme + " \\\\ " + this.$data.secondTermeValue
+        );
+        this.listSecondItemOfUser.push(
+          this.$data.secondTerme + " // " + this.$data.secondTermeValue
+        );
+      }
+      // Tout remettre à null
+      this.firstTerme = null;
+      this.firstTermeValue = null;
+      this.secondTerme = null;
+      this.secondTermeValue = null;
+    },
+    //méthode pour supprimer les éléments qu'on veut supprimer
+    removeTodoFirst(item) {
+      // Calcul des index
+      const itemIndex1 = this.listFirstItemOfUser.indexOf(item);
+
+      if (itemIndex1 != null) {
+        // Suppression dans liste 1
+        this.listFirstItemOfUser = this.listFirstItemOfUser.filter(
+          (t) => t !== item
+        );
+        //suppriemr l'élément dans la liste 2
+        this.listSecondItemOfUser = this.listSecondItemOfUser.filter(
+          (t) => t !== this.listSecondItemOfUser[itemIndex1]
+        );
+      }
+    },
+    removeTodoSecond(item) {
+      // Calcul des index
+      const itemIndex2 = this.listSecondItemOfUser.indexOf(item);
+
+      if (itemIndex2 != null) {
+        // Suppression dans liste 2
+        this.listSecondItemOfUser = this.listSecondItemOfUser.filter(
+          (t) => t !== item
+        );
+        //suppriemr l'élément dans la liste 2
+        this.listFirstItemOfUser = this.listFirstItemOfUser.filter(
+          (t) => t !== this.listFirstItemOfUser[itemIndex2]
+        );
+      }
+    },
+  },
 };
 </script>
 
