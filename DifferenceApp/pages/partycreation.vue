@@ -18,7 +18,7 @@
           @input=""
         />
         <small
-          v-if="showMessageError"
+          v-if="showMessageError1"
           id="username2-help"
           class="block p-error -mt-4"
           >{{ messageErreur }}</small
@@ -30,9 +30,27 @@
           class="mb-5 ml-10"
           placeholder="Selection Type de relation"
         />
+        <!--v-model : sauvegarde dans la variable -->
+        <InputText
+          id="firstTermeValue"
+          v-model="firstTermeValue"
+          class="mb-5 block ml-10"
+          placeholder="Type valeur"
+          type="text"
+        />
       </div>
 
-      <div class="col flex flex-column"></div>
+      <div
+        class="col flex flex-column align-items-center"
+        style="margin-top: 160px"
+      >
+        <Button
+          class=""
+          label="Validé la différence"
+          type="submit"
+          @click="ajoutInList()"
+        />
+      </div>
 
       <div class="col flex flex-column">
         <InputText
@@ -42,6 +60,7 @@
           class="block mb-5"
           placeholder="Second Terme"
           type="text"
+          @input=""
         />
         <small
           v-if="showMessageError2"
@@ -56,31 +75,7 @@
           class="mb-5"
           placeholder="Selection Type de relation"
         />
-      </div>
-    </div>
 
-    <div class="grid">
-      <div class="col flex flex-column">
-        <!--v-model : sauvegarde dans la variable -->
-        <InputText
-          id="firstTermeValue"
-          v-model="firstTermeValue"
-          class="mb-5 block ml-10"
-          placeholder="Type valeur"
-          type="text"
-        />
-      </div>
-
-      <div class="col flex flex-column align-items-center">
-        <Button
-          class=""
-          label="Validé la différence"
-          type="submit"
-          @click="submitForm()"
-        />
-      </div>
-
-      <div class="col flex flex-column">
         <InputText
           id="secondTermeValue"
           v-model="secondTermeValue"
@@ -114,7 +109,7 @@
                 >
                   <span
                     :style="{
-                      color: item.includes('//') ? 'green' : 'red',
+                      color: item.includes('/') ? 'green' : 'red',
                       textAlign: 'rigth',
                     }"
                     >{{ item }}</span
@@ -135,7 +130,7 @@
                       box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
                       cursor: pointer;
                     "
-                    @click="removeTodoFirst(item)"
+                    @click="removeTodo(item)"
                     >X</Button
                   >
                 </li>
@@ -144,9 +139,7 @@
           </div>
         </div>
       </div>
-      <div class="col flex flex-column justify-center align-items-center">
-        <Button class="" label="Validé la partie" />
-      </div>
+      <div class="col"></div>
       <div
         class="col mr-30 border-round border-1 border-dotted flex flex-column justify-center"
       >
@@ -182,13 +175,13 @@
                       box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
                       cursor: pointer;
                     "
-                    @click="removeTodoSecond(item)"
+                    @click="removeTodo(item)"
                   >
                     X
                   </Button>
                   <span
                     :style="{
-                      color: item.includes('//') ? 'green' : 'red',
+                      color: item.includes('/') ? 'green' : 'red',
                       textAlign: 'left',
                     }"
                     >{{ item }}</span
@@ -199,6 +192,9 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="flex flex-column justify-center align-items-center">
+      <Button class="" label="Validé la partie" />
     </div>
   </div>
 </template>
@@ -213,7 +209,7 @@ definePageMeta({
 
 const messageErreur = "Terme non présent dans Rezo";
 
-const showMessageError = ref(false);
+const showMessageError1 = ref(false);
 const showMessageError2 = ref(false);
 
 const isActiveErreur1 = ref(false);
@@ -249,9 +245,9 @@ watch(firstTerme, async (word, old) => {
     // Verification si le mot existe ou pas
     if (selected != null) {
       isActiveErreur1.value = true;
-      showMessageError.value = true;
+      showMessageError1.value = true;
     } else {
-      showMessageError.value = false;
+      showMessageError1.value = false;
       isActiveErreur1.value = false;
     }
   }
@@ -290,6 +286,7 @@ export default {
   data() {
     return {
       caract: ["lieux", "caractéristique", "bute", "appartient"],
+      selectedCate: null,
       listFirstItemOfUser: [],
       listSecondItemOfUser: [],
       firstTerme: null,
@@ -301,60 +298,194 @@ export default {
 
   methods: {
     //méthode pour affiche les éléments qu'on vient de rentrer
-    submitForm() {
-      //Promleme si on met pas de truc en plus
+    ajoutInList() {
+      // Si le prmier élément est rempli et le deuxieme aussi
       if (
-        this.$data.firstTermeValue != null &&
-        this.$data.secondTermeValue != null
+        this.$data.firstTermeValue !== null &&
+        this.$data.firstTermeValue !== "" &&
+        this.$data.secondTermeValue !== null &&
+        this.$data.secondTermeValue !== ""
       ) {
-        this.listFirstItemOfUser.push(
-          this.$data.firstTerme + " // " + this.$data.firstTermeValue
-        );
-        this.listSecondItemOfUser.push(
-          this.$data.secondTerme + " \\\\ " + this.$data.firstTermeValue
-        );
-        this.listFirstItemOfUser.push(
-          this.$data.firstTerme + " \\\\ " + this.$data.secondTermeValue
-        );
-        this.listSecondItemOfUser.push(
-          this.$data.secondTerme + " // " + this.$data.secondTermeValue
-        );
-      } else if (
-        this.$data.firstTermeValue != null &&
-        (this.$data.secondTermeValue == null ||
-          this.$data.secondTermeValue == "")
+        // Pour le terme à gauche
+        //Verification si la chaine est dans la liste ou pas
+        if (
+          !this.listFirstItemOfUser.includes(
+            this.$data.firstTerme +
+              " / " +
+              this.$data.selectedCate +
+              " / " +
+              this.$data.firstTermeValue
+          ) &&
+          !this.listSecondItemOfUser.includes(
+            this.$data.secondTerme +
+              " \\ " +
+              this.$data.selectedCate +
+              " \\ " +
+              this.$data.firstTermeValue
+          )
+        ) {
+          // Ajout en vert à gauche
+          this.listFirstItemOfUser.push(
+            this.$data.firstTerme +
+              " / " +
+              this.$data.selectedCate +
+              " / " +
+              this.$data.firstTermeValue
+          );
+          // Ajout en rouge à droite
+          this.listSecondItemOfUser.push(
+            this.$data.secondTerme +
+              " \\ " +
+              this.$data.selectedCate +
+              " \\ " +
+              this.$data.firstTermeValue
+          );
+        }
+
+        // Pour le terme à droite
+        //Verification si le terme n'existe pas déjà dans la liste
+        if (
+          !this.listFirstItemOfUser.includes(
+            this.$data.firstTerme +
+              " \\ " +
+              this.$data.selectedCate +
+              " \\ " +
+              this.$data.secondTermeValue
+          ) &&
+          !this.listSecondItemOfUser.includes(
+            this.$data.secondTerme +
+              " / " +
+              this.$data.selectedCate +
+              " / " +
+              this.$data.secondTermeValue
+          )
+        ) {
+          // Ajout en rouge à gauche
+          this.listFirstItemOfUser.push(
+            this.$data.firstTerme +
+              " \\ " +
+              this.$data.selectedCate +
+              " \\ " +
+              this.$data.secondTermeValue
+          );
+          // Ajout en vert à droite
+          this.listSecondItemOfUser.push(
+            this.$data.secondTerme +
+              " / " +
+              this.$data.selectedCate +
+              " / " +
+              this.$data.secondTermeValue
+          );
+        }
+      }
+      // Sinon si le premier élément n'est pas vide ou null et que le deuxieme oui
+      if (
+        this.$data.firstTermeValue !== null &&
+        this.$data.firstTermeValue !== "" &&
+        (this.$data.secondTermeValue === null ||
+          this.$data.secondTermeValue === "")
       ) {
-        // Ajout des éléments
-        this.listFirstItemOfUser.push(
-          this.$data.firstTerme + " // " + this.$data.firstTermeValue
-        );
-        this.listSecondItemOfUser.push(
-          this.$data.secondTerme + " \\\\ " + this.$data.firstTermeValue
-        );
-      } else if (
-        this.$data.firstTermeValue == null &&
-        (this.$data.secondTermeValue != null ||
-          this.$data.secondTermeValue == "")
+        //Verification si le terme n'existe pas déjà dans la liste
+        if (
+          !this.listFirstItemOfUser.includes(
+            this.$data.firstTerme +
+              " / " +
+              this.$data.selectedCate +
+              " / " +
+              this.$data.firstTermeValue
+          ) &&
+          !this.listSecondItemOfUser.includes(
+            this.$data.secondTerme +
+              " \\ " +
+              this.$data.selectedCate +
+              " \\ " +
+              this.$data.firstTermeValue
+          )
+        ) {
+          // Ajout du premier element en vert à gauche et en rouge à droite
+          this.listFirstItemOfUser.push(
+            this.$data.firstTerme +
+              " / " +
+              this.$data.selectedCate +
+              " / " +
+              this.$data.firstTermeValue
+          );
+          this.listSecondItemOfUser.push(
+            this.$data.secondTerme +
+              " \\ " +
+              this.$data.selectedCate +
+              " \\ " +
+              this.$data.firstTermeValue
+          );
+        }
+      }
+      //Sinon si le premier élément est null ou vide et que le deuxième non
+      if (
+        (this.$data.firstTermeValue === null ||
+          this.$data.firstTermeValue === "") &&
+        this.$data.secondTermeValue !== null &&
+        this.$data.secondTermeValue !== ""
       ) {
-        this.listFirstItemOfUser.push(
-          this.$data.firstTerme + " \\\\ " + this.$data.secondTermeValue
-        );
-        this.listSecondItemOfUser.push(
-          this.$data.secondTerme + " // " + this.$data.secondTermeValue
-        );
-      } else {
+        //Verification si le terme n'existe pas déjà dans la liste
+        if (
+          !this.listFirstItemOfUser.includes(
+            this.$data.firstTerme +
+              " \\ " +
+              this.$data.selectedCate +
+              " \\ " +
+              this.$data.secondTermeValue
+          ) &&
+          !this.listSecondItemOfUser.includes(
+            this.$data.secondTerme +
+              " / " +
+              this.$data.selectedCate +
+              " / " +
+              this.$data.secondTermeValue
+          )
+        ) {
+          // Ajout du premier element en rouge à gauche et en vert à droite
+          this.listFirstItemOfUser.push(
+            this.$data.firstTerme +
+              " \\ " +
+              this.$data.selectedCate +
+              " \\ " +
+              this.$data.secondTermeValue
+          );
+          this.listSecondItemOfUser.push(
+            this.$data.secondTerme +
+              " / " +
+              this.$data.selectedCate +
+              " / " +
+              this.$data.secondTermeValue
+          );
+        }
+      }
+      //Sinon on a rien rempli donc on ne fait rien
+      if (
+        (
+          this.$data.firstTermeValue === null ||
+          this.$data.firstTermeValue === ""
+        )(
+          this.$data.secondTermeValue === null ||
+            this.$data.secondTermeValue === ""
+        )
+      ) {
       }
       // Tout remettre à null
-      this.firstTerme = null;
-      this.firstTermeValue = null;
-      this.secondTerme = null;
-      this.secondTermeValue = null;
+      this.$data.selectedCate = null;
+      this.$data.firstTerme = null;
+      this.$data.firstTermeValue = null;
+      this.$data.secondTerme = null;
+      this.$data.secondTermeValue = null;
     },
-    //méthode pour supprimer les éléments qu'on veut supprimer
-    removeTodoFirst(item) {
+
+    // Méthode pour supprimer les éléments qu'on veut supprimer
+    removeTodo(item) {
       // Calcul des index
       const itemIndex1 = this.listFirstItemOfUser.indexOf(item);
+      const itemIndex2 = this.listSecondItemOfUser.indexOf(item);
 
+      //Si l'index n'est pas null alors l'élément estdans la list 1
       if (itemIndex1 != -1) {
         // Suppression dans liste 1
         this.listFirstItemOfUser = this.listFirstItemOfUser.filter(
@@ -365,11 +496,7 @@ export default {
           (t) => t !== this.listSecondItemOfUser[itemIndex1]
         );
       }
-    },
-    removeTodoSecond(item) {
-      // Calcul des index
-      const itemIndex2 = this.listSecondItemOfUser.indexOf(item);
-
+      //Si l'index n'est pas null alors l'élément estdans la list 2
       if (itemIndex2 != -1) {
         // Suppression dans liste 2
         this.listSecondItemOfUser = this.listSecondItemOfUser.filter(
