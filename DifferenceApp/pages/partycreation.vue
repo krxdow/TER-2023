@@ -93,7 +93,7 @@
 
     <div class="grid">
       <div
-        class="col mr-5 border-round border-1 border-dotted flex flex-column justify-center"
+        class="col ml-30 border-round border-1 border-dotted flex flex-column justify-center"
       >
         <h3>Liste pour 1er terme :</h3>
         <div class="card">
@@ -105,15 +105,24 @@
                 <li
                   v-for="item in listFirstItemOfUser"
                   :key="item"
-                  style="display: flex; align-items: center"
+                  style="
+                    margin-right: 10px;
+                    display: flex;
+                    flex-direction: row-reverse;
+                    align-items: center;
+                  "
                 >
                   <span
-                    :style="{ color: item.includes('//') ? 'green' : 'red' }"
+                    :style="{
+                      color: item.includes('//') ? 'green' : 'red',
+                      textAlign: 'rigth',
+                    }"
                     >{{ item }}</span
                   >
                   <Button
-                    class="p-button-icon-bottom"
+                    class="p-button-icon-bottom align-button"
                     style="
+                      margin-right: 10px;
                       display: flex;
                       justify-content: center;
                       align-items: center;
@@ -139,7 +148,7 @@
         <Button class="" label="Validé la partie" />
       </div>
       <div
-        class="col ml-5 border-round border-1 border-dotted flex flex-column justify-center"
+        class="col mr-30 border-round border-1 border-dotted flex flex-column justify-center"
       >
         <h3>Liste pour 2nd terme :</h3>
         <div class="card">
@@ -151,16 +160,16 @@
                 <li
                   v-for="item in listSecondItemOfUser"
                   :key="item"
-                  style="margin-rigth: 10px; display: flex; align-items: center"
+                  style="
+                    display: flex;
+                    flex-direction: row-reverse;
+                    align-items: center;
+                  "
                 >
-                  <span
-                    :style="{ color: item.includes('//') ? 'green' : 'red' }"
-                  >
-                    {{ item }}
-                  </span>
                   <Button
-                    class="margin-left:10px p-button-icon-bottom"
+                    class="p-button-icon-bottom"
                     style="
+                      margin-right: 10px;
                       display: flex;
                       justify-content: center;
                       align-items: center;
@@ -174,7 +183,15 @@
                       cursor: pointer;
                     "
                     @click="removeTodoSecond(item)"
-                    >X</Button
+                  >
+                    X
+                  </Button>
+                  <span
+                    :style="{
+                      color: item.includes('//') ? 'green' : 'red',
+                      textAlign: 'left',
+                    }"
+                    >{{ item }}</span
                   >
                 </li>
               </ul>
@@ -286,21 +303,46 @@ export default {
     //méthode pour affiche les éléments qu'on vient de rentrer
     submitForm() {
       //Promleme si on met pas de truc en plus
-      if (this.$data.firstTermeValue != null) {
+      if (
+        this.$data.firstTermeValue != null &&
+        this.$data.secondTermeValue != null
+      ) {
         this.listFirstItemOfUser.push(
           this.$data.firstTerme + " // " + this.$data.firstTermeValue
         );
         this.listSecondItemOfUser.push(
           this.$data.secondTerme + " \\\\ " + this.$data.firstTermeValue
         );
-      }
-      if (this.$data.secondTermeValue != null) {
         this.listFirstItemOfUser.push(
           this.$data.firstTerme + " \\\\ " + this.$data.secondTermeValue
         );
         this.listSecondItemOfUser.push(
           this.$data.secondTerme + " // " + this.$data.secondTermeValue
         );
+      } else if (
+        this.$data.firstTermeValue != null &&
+        (this.$data.secondTermeValue == null ||
+          this.$data.secondTermeValue == "")
+      ) {
+        // Ajout des éléments
+        this.listFirstItemOfUser.push(
+          this.$data.firstTerme + " // " + this.$data.firstTermeValue
+        );
+        this.listSecondItemOfUser.push(
+          this.$data.secondTerme + " \\\\ " + this.$data.firstTermeValue
+        );
+      } else if (
+        this.$data.firstTermeValue == null &&
+        (this.$data.secondTermeValue != null ||
+          this.$data.secondTermeValue == "")
+      ) {
+        this.listFirstItemOfUser.push(
+          this.$data.firstTerme + " \\\\ " + this.$data.secondTermeValue
+        );
+        this.listSecondItemOfUser.push(
+          this.$data.secondTerme + " // " + this.$data.secondTermeValue
+        );
+      } else {
       }
       // Tout remettre à null
       this.firstTerme = null;
@@ -313,7 +355,7 @@ export default {
       // Calcul des index
       const itemIndex1 = this.listFirstItemOfUser.indexOf(item);
 
-      if (itemIndex1 != null) {
+      if (itemIndex1 != -1) {
         // Suppression dans liste 1
         this.listFirstItemOfUser = this.listFirstItemOfUser.filter(
           (t) => t !== item
@@ -328,12 +370,12 @@ export default {
       // Calcul des index
       const itemIndex2 = this.listSecondItemOfUser.indexOf(item);
 
-      if (itemIndex2 != null) {
+      if (itemIndex2 != -1) {
         // Suppression dans liste 2
         this.listSecondItemOfUser = this.listSecondItemOfUser.filter(
           (t) => t !== item
         );
-        //suppriemr l'élément dans la liste 2
+        //suppriemr l'élément dans la liste 1
         this.listFirstItemOfUser = this.listFirstItemOfUser.filter(
           (t) => t !== this.listFirstItemOfUser[itemIndex2]
         );
