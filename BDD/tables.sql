@@ -44,7 +44,7 @@ CREATE TABLE Parties (
 	idEntite1 INT(100),
 	idEntite2 INT(100),
     idJoueur INT(100),
-	nb_joueur INT(100),
+	nb_fois_jouer INT(100),
 	PRIMARY KEY (id_partie),
 	FOREIGN KEY (idEntite1) REFERENCES Entites(id_entite),
 	FOREIGN KEY (idEntite2) REFERENCES Entites(id_entite),

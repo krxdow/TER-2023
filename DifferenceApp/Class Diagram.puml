@@ -3,32 +3,54 @@
 
 !include https://raw.githubusercontent.com/plantuml/plantuml/master/themes/puml-theme-mars.puml
 
-abstract class "Users" as u1{
--id: Integer
--first-name: String
--last-name: String
+Class "Users" as Users{
+-id_users: Integer
+-first_name: String
+-last_name: String
+-age: Integer
 -born: Date
 -email: String
+-passWord: String
 }
 
 /'abstract class "Users" as u2{}'/
 
-class Player{
+Class Player{
 -status: Boolean
 }
 Class Admin{}
 
-abstract Game{
--id: Integer
-
--first-term: String
--first-term-rel: String
--first-term-value: String
-
--second-term: String
--second-term-rel: String
--second-term-value: String
+Class Entite{
+- id_entite: Integer
+- nom_entite: String
+- categorie: String
+- is_ajoute: Integer
 }
+
+Class Relations{
+- id_relation
+- first_term: String
+- type_relation: String
+- second_term: String
+- valeur_relation: String
+}
+
+
+Class Game{
+-id_game: Integer
+
+-first_term: String
+-second_term: String
+
+-nb_fois_jouer: Integer
+}
+
+Class RelationInGame{
+- idRelation: Integer
+- idGame: Integer
+}
+
+
 
 class GamesPlayed{
 -id: Integer
@@ -38,12 +60,16 @@ class GamesPlayed{
 }
 
 
- u1 <|-- Player
- u1 <|--Admin
-u1 "1..*"  o-- "1"Game: create >
+Users <|-- Player
+Users "1..*"  o-- "1"Game: create >
+Users <|--Admin
 
-Game "*" - "*"Player : play <
+Game "*" - "*"Relations : contain <
+(Relations, Game)"*" --  RelationInGame
+
+Game "*" - "1"Player : play <
 (Player, Game)"*" --  GamesPlayed
-@enduml
+
+
 
 @enduml
