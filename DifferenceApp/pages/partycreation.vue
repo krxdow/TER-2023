@@ -91,7 +91,7 @@
           class=""
           label="Validé la différence"
           type="submit"
-          @click="ajoutInList()"
+          @click="ajoutInList"
         />
       </div>
       <!--Entrée de la valeur 2-->
@@ -157,7 +157,7 @@
                       box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
                       cursor: pointer;
                     "
-                    @click="removeTodo(item)"
+                    @click="() => removeTodo(item)"
                     >X</Button
                   >
                 </li>
@@ -248,8 +248,15 @@ const showMessageError2 = ref(false);
 const isActiveErreur1 = ref(false);
 const isActiveErreur2 = ref(false);
 
-let secondTerme = ref("");
 let firstTerme = ref("");
+let secondTerme = ref("");
+let firstTermeValue = ref("");
+let secondTermeValue = ref("");
+
+const caract = ["lieux", "caractéristique", "bute", "appartient"];
+let selectedCate = ref("");
+let listFirstItemOfUser = ref([]);
+let listSecondItemOfUser = ref([]);
 
 // Fonction qui surveille l'état d'une variable (callback)
 watch(firstTerme, async (word, old) => {
@@ -310,205 +317,219 @@ watch(secondTerme, async (word, old) => {
     }
   }
 });
-</script>
 
-<script>
-export default {
-  name: "partycreation",
-
-  data() {
-    return {
-      caract: ["lieux", "caractéristique", "bute", "appartient"],
-      selectedCate: null,
-      listFirstItemOfUser: [],
-      listSecondItemOfUser: [],
-      firstTermeValue: null,
-      secondTermeValue: null,
-    };
-  },
-
-  methods: {
-    //méthode pour affiche les éléments qu'on vient de rentrer
-    ajoutInList() {
-      // Si le prmier élément est rempli et le deuxieme aussi
+// Ajout dans la liste les différences
+function ajoutInList() {
+  if (
+    (firstTerme.value !== null || firstTerme.value !== "") &&
+    (secondTerme.value !== null || secondTerme.value !== "") &&
+    isActiveErreur1.value !== true &&
+    isActiveErreur2.value !== true
+  ) {
+    // Si le prmier élément est rempli et le deuxieme aussi
+    if (
+      firstTermeValue.value !== null &&
+      firstTermeValue.value !== "" &&
+      secondTermeValue.value !== null &&
+      secondTermeValue.value !== ""
+    ) {
+      // Pour le terme à gauche
+      //Verification si la chaine est dans la liste ou pas
       if (
-        this.$data.firstTermeValue !== null &&
-        this.$data.firstTermeValue !== "" &&
-        this.$data.secondTermeValue !== null &&
-        this.$data.secondTermeValue !== ""
-      ) {
-        // Pour le terme à gauche
-        //Verification si la chaine est dans la liste ou pas
-        if (
-          !this.listFirstItemOfUser.includes(
-            this.$data.selectedCate + " // " + this.$data.firstTermeValue
-          ) &&
-          !this.listSecondItemOfUser.includes(
-            this.$data.selectedCate + " \\\\ " + this.$data.firstTermeValue
-          )
-        ) {
-          // Ajout en vert à gauche
-          this.listFirstItemOfUser.push(
-            this.$data.selectedCate + " // " + this.$data.firstTermeValue
-          );
-          // Ajout en rouge à droite
-          this.listSecondItemOfUser.push(
-            this.$data.selectedCate + " \\\\ " + this.$data.firstTermeValue
-          );
-        }
-
-        // Pour le terme à droite
-        //Verification si le terme n'existe pas déjà dans la liste
-        if (
-          !this.listFirstItemOfUser.includes(
-            this.$data.selectedCate + " \\\\ " + this.$data.secondTermeValue
-          ) &&
-          !this.listSecondItemOfUser.includes(
-            this.$data.selectedCate + " // " + this.$data.secondTermeValue
-          )
-        ) {
-          // Ajout en rouge à gauche
-          this.listFirstItemOfUser.push(
-            this.$data.selectedCate + " \\\\ " + this.$data.secondTermeValue
-          );
-          // Ajout en vert à droite
-          this.listSecondItemOfUser.push(
-            this.$data.selectedCate + " // " + this.$data.secondTermeValue
-          );
-        }
-      }
-      // Sinon si le premier élément n'est pas vide ou null et que le deuxieme oui
-      if (
-        this.$data.firstTermeValue !== null &&
-        this.$data.firstTermeValue !== "" &&
-        (this.$data.secondTermeValue === null ||
-          this.$data.secondTermeValue === "")
-      ) {
-        //Verification si le terme n'existe pas déjà dans la liste
-        if (
-          !this.listFirstItemOfUser.includes(
-            this.$data.firstTerme +
-              " / " +
-              this.$data.selectedCate +
-              " / " +
-              this.$data.firstTermeValue
-          ) &&
-          !this.listSecondItemOfUser.includes(
-            this.$data.secondTerme +
-              " \\ " +
-              this.$data.selectedCate +
-              " \\ " +
-              this.$data.firstTermeValue
-          )
-        ) {
-          // Ajout du premier element en vert à gauche et en rouge à droite
-          this.listFirstItemOfUser.push(
-            this.$data.firstTerme +
-              " / " +
-              this.$data.selectedCate +
-              " / " +
-              this.$data.firstTermeValue
-          );
-          this.listSecondItemOfUser.push(
-            this.$data.secondTerme +
-              " \\ " +
-              this.$data.selectedCate +
-              " \\ " +
-              this.$data.firstTermeValue
-          );
-        }
-      }
-      //Sinon si le premier élément est null ou vide et que le deuxième non
-      if (
-        (this.$data.firstTermeValue === null ||
-          this.$data.firstTermeValue === "") &&
-        this.$data.secondTermeValue !== null &&
-        this.$data.secondTermeValue !== ""
-      ) {
-        //Verification si le terme n'existe pas déjà dans la liste
-        if (
-          !this.listFirstItemOfUser.includes(
-            this.$data.firstTerme +
-              " \\ " +
-              this.$data.selectedCate +
-              " \\ " +
-              this.$data.secondTermeValue
-          ) &&
-          !this.listSecondItemOfUser.includes(
-            this.$data.secondTerme +
-              " / " +
-              this.$data.selectedCate +
-              " / " +
-              this.$data.secondTermeValue
-          )
-        ) {
-          // Ajout du premier element en rouge à gauche et en vert à droite
-          this.listFirstItemOfUser.push(
-            this.$data.firstTerme +
-              " \\ " +
-              this.$data.selectedCate +
-              " \\ " +
-              this.$data.secondTermeValue
-          );
-          this.listSecondItemOfUser.push(
-            this.$data.secondTerme +
-              " / " +
-              this.$data.selectedCate +
-              " / " +
-              this.$data.secondTermeValue
-          );
-        }
-      }
-      //Sinon on a rien rempli donc on ne fait rien
-      if (
-        (
-          this.$data.firstTermeValue === null ||
-          this.$data.firstTermeValue === ""
-        )(
-          this.$data.secondTermeValue === null ||
-            this.$data.secondTermeValue === ""
+        !listFirstItemOfUser.value.includes(
+          firstTerme.value +
+            " / " +
+            selectedCate.value +
+            " / " +
+            firstTermeValue.value
+        ) &&
+        !listSecondItemOfUser.value.includes(
+          secondTerme.value +
+            " \\ " +
+            selectedCate.value +
+            " \\ " +
+            firstTermeValue.value
         )
       ) {
+        // Ajout en vert à gauche
+        listFirstItemOfUser.value.push(
+          firstTerme.value +
+            " / " +
+            selectedCate.value +
+            " / " +
+            firstTermeValue.value
+        );
+        // Ajout en rouge à droite
+        listSecondItemOfUser.value.push(
+          secondTerme.value +
+            " \\ " +
+            selectedCate.value +
+            " \\ " +
+            firstTermeValue.value
+        );
       }
-      // Tout remettre à null
-      this.$data.selectedCate = null;
-      this.$data.firstTerme = null;
-      this.$data.firstTermeValue = null;
-      this.$data.secondTerme = null;
-      this.$data.secondTermeValue = null;
-    },
 
-    // Méthode pour supprimer les éléments qu'on veut supprimer
-    removeTodo(item) {
-      // Calcul des index
-      const itemIndex1 = this.listFirstItemOfUser.indexOf(item);
-      const itemIndex2 = this.listSecondItemOfUser.indexOf(item);
+      // Pour le terme à droite
+      //Verification si le terme n'existe pas déjà dans la liste
+      if (
+        !listFirstItemOfUser.value.includes(
+          firstTerme.value +
+            " \\ " +
+            selectedCate.value +
+            " \\ " +
+            secondTermeValue.value
+        ) &&
+        !listSecondItemOfUser.value.includes(
+          secondTerme.value +
+            " / " +
+            selectedCate.value +
+            " / " +
+            secondTermeValue.value
+        )
+      ) {
+        // Ajout en rouge à gauche
+        listFirstItemOfUser.value.push(
+          firstTerme.value +
+            " \\ " +
+            selectedCate.value +
+            " \\ " +
+            secondTermeValue.value
+        );
+        // Ajout en vert à droite
+        listSecondItemOfUser.value.push(
+          secondTerme.value +
+            " / " +
+            selectedCate.value +
+            " / " +
+            secondTermeValue.value
+        );
+      }
+    }
+    // Sinon si le premier élément n'est pas vide ou null et que le deuxieme oui
+    if (
+      firstTermeValue.value !== null &&
+      firstTermeValue.value !== "" &&
+      (secondTermeValue.value === null || secondTermeValue.value === "")
+    ) {
+      //Verification si le terme n'existe pas déjà dans la liste
+      if (
+        !listFirstItemOfUser.value.includes(
+          firstTerme.value +
+            " / " +
+            selectedCate.value +
+            " / " +
+            firstTermeValue.value
+        ) &&
+        !listSecondItemOfUser.value.includes(
+          secondTerme.value +
+            " \\ " +
+            selectedCate.value +
+            " \\ " +
+            firstTermeValue.value
+        )
+      ) {
+        // Ajout du premier element en vert à gauche et en rouge à droite
+        listFirstItemOfUser.value.push(
+          firstTerme.value +
+            " / " +
+            selectedCate.value +
+            " / " +
+            firstTermeValue.value
+        );
+        listSecondItemOfUser.value.push(
+          secondTerme.value +
+            " \\ " +
+            selectedCate.value +
+            " \\ " +
+            firstTermeValue.value
+        );
+      }
+    }
+    //Sinon si le premier élément est null ou vide et que le deuxième non
+    if (
+      (firstTermeValue.value === null || firstTermeValue.value === "") &&
+      secondTermeValue.value !== null &&
+      secondTermeValue.value !== ""
+    ) {
+      //Verification si le terme n'existe pas déjà dans la liste
+      if (
+        !listFirstItemOfUser.value.includes(
+          firstTerme.value +
+            " \\ " +
+            selectedCate.value +
+            " \\ " +
+            secondTermeValue.value
+        ) &&
+        !listSecondItemOfUser.value.includes(
+          secondTerme.value +
+            " / " +
+            selectedCate.value +
+            " / " +
+            secondTermeValue.value
+        )
+      ) {
+        // Ajout du premier element en rouge à gauche et en vert à droite
+        listFirstItemOfUser.value.push(
+          firstTerme.value +
+            " \\ " +
+            selectedCate.value +
+            " \\ " +
+            secondTermeValue.value
+        );
+        listSecondItemOfUser.value.push(
+          secondTerme.value +
+            " / " +
+            selectedCate.value +
+            " / " +
+            secondTermeValue.value
+        );
+      }
+    }
+    //Sinon on a rien rempli donc on ne fait rien
+    if (
+      (firstTermeValue.value === null || firstTermeValue.value === "")(
+        secondTermeValue.value === null || secondTermeValue.value === ""
+      )
+    ) {
+    }
+    // Tout remettre à null
+    selectedCate.value = "";
+    firstTerme.value = "";
+    firstTermeValue.value = "";
+    secondTerme.value = "";
+    secondTermeValue.value = "";
+  }
+}
 
-      //Si l'index n'est pas null alors l'élément estdans la list 1
-      if (itemIndex1 != -1) {
-        // Suppression dans liste 1
-        this.listFirstItemOfUser = this.listFirstItemOfUser.filter(
-          (t) => t !== item
-        );
-        //suppriemr l'élément dans la liste 2
-        this.listSecondItemOfUser = this.listSecondItemOfUser.filter(
-          (t) => t !== this.listSecondItemOfUser[itemIndex1]
-        );
-      }
-      //Si l'index n'est pas null alors l'élément estdans la list 2
-      if (itemIndex2 != -1) {
-        // Suppression dans liste 2
-        this.listSecondItemOfUser = this.listSecondItemOfUser.filter(
-          (t) => t !== item
-        );
-        //suppriemr l'élément dans la liste 1
-        this.listFirstItemOfUser = this.listFirstItemOfUser.filter(
-          (t) => t !== this.listFirstItemOfUser[itemIndex2]
-        );
-      }
-    },
-  },
-};
+// Méthode pour supprimer les éléments qu'on veut supprimer
+function removeTodo(item) {
+  // Calcul des index
+  const itemIndex1 = listFirstItemOfUser.value.indexOf(item);
+  const itemIndex2 = listSecondItemOfUser.value.indexOf(item);
+
+  //Si l'index n'est pas null alors l'élément estdans la list 1
+  if (itemIndex1 != -1) {
+    // Suppression dans liste 1
+    listFirstItemOfUser.value = listFirstItemOfUser.value.filter(
+      (t) => t !== item
+    );
+    //suppriemr l'élément dans la liste 2
+    listSecondItemOfUser.value = listSecondItemOfUser.value.filter(
+      (t) => t !== listSecondItemOfUser.value[itemIndex1]
+    );
+  }
+  //Si l'index n'est pas null alors l'élément estdans la list 2
+  if (itemIndex2 != -1) {
+    // Suppression dans liste 2
+    listSecondItemOfUser.value = listSecondItemOfUser.value.filter(
+      (t) => t !== item
+    );
+    //suppriemr l'élément dans la liste 1
+    listFirstItemOfUser.value = listFirstItemOfUser.value.filter(
+      (t) => t !== listFirstItemOfUser.value[itemIndex2]
+    );
+  }
+}
 </script>
 
 <style scoped></style>
