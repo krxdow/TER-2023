@@ -38,10 +38,8 @@ Class Relations{
 
 Class Game{
 -id_game: Integer
-
 -first_term: String
 -second_term: String
-
 -nb_fois_jouer: Integer
 }
 
