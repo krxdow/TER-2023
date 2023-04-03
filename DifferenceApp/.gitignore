@@ -10,3 +10,4 @@ dist
 /cors.js
 /.idea/dictionaries/ludow.xml
 /yarn.lock
+/.vscode/
