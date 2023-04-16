@@ -1,43 +1,71 @@
 // This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-generator client {
-  provider = "prisma-client-js"
-}
+// learn more about it in the docs: https://pris.ly/d/prismaschema
 
 datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
 }
 
-model User {
-  id         Int      @id @default(autoincrement())
-  email      String   @unique
-  frist_name String?
-  last_name  String?
-  born       DateTime
-  password   String
-  age        Int
-  // role       Role     @default(USER) //for mysql or postgres
-  Game       Game[]
+generator client {
+  provider = "prisma-client-js"
 }
 
-model Admin {
-  id         Int      @id @default(autoincrement())
-  email      String   @unique
-  frist_name String?
-  last_name  String?
-  born       DateTime
-  password   String
-  age        Int
-  // role       Role     @default(USER) //for mysql or postgres
+
+
+model Users {
+  id_user       Int             @id @default(autoincrement())
+  email         String          @unique
+  first_name    String?
+  last_name     String?
+  age           Int
+  birthday      DateTime
+  password      String
+  type_user     String          @default("JOUEUR")  //autre possibilité etre ADMIN
+  games         Game[]          @relation(name: "UserGames")    //un utilisateur a plusieurs jeux
+  gamesPlayed   GamesPlayed[]   @relation(name:"UserGamesPlayed") //un utilisateur joue a plusieursparties
+}
+
+model Entites{
+  id_entite     Int       @id @default(autoincrement())
+  nom_entite    String
+  categorie     String
+  is_ajoute     Boolean   @default(false)
+  entite1Games  Game[]    @relation(name: "firstEntite")    //une entite est présente en tant que premier terme dans plusieurs jeux
+  entite2Games  Game[]    @relation(name: "secondEntite")   //une entite est présente en tant que second terme dans plusieurs jeux 
 }
 
 model Game {
-  id             Int    @id @default(autoincrement())
-  fist_term      String
-  second_term    String
-  user           User?  @relation(fields: [user_id], references: [id])
-  user_id        Int?
-  number_of_play Int
+  id_game         Int             @id @default(autoincrement())
+  firstTerme      Entites         @relation("firstEntite", fields: [idFirstTerm], references: [id_entite])
+  idFirstTerm     Int             @unique
+  secondTerme     Entites         @relation("secondEntite", fields: [idSecondTerm], references: [id_entite])
+  idSecondTerm    Int             @unique
+  user            Users           @relation("UserGames", fields: [idUser], references: [id_user])
+  idUser          Int             @unique
+  number_of_play  Int
+  is_ajoute       Boolean         @default(false)
+  differences     Differences[]   @relation(name: "GameDifference")   //un jeu peut avoir plusieurs differences
+  gamePlayed      GamesPlayed[]   @relation(name: "GameGamesPlayed")  //un jeu est jouer par plusieurs partie joué
+}
+
+
+
+model Differences {
+  id_diff       Int       @id @default(autoincrement())
+  type_diff     String    @default("CARACTERISTIQUE")   //autre possiblité etant lieu et couleur
+  valeur_diff   String
+  game          Game      @relation("GameDifference", fields: [idGame], references: [id_game])
+  idGame        Int       @unique
+}
+
+
+model GamesPlayed{
+  idGame        Int       @unique
+  game          Game      @relation("GameGamesPlayed", fields: [idGame], references: [id_game])
+  idPlayer      Int       @unique
+  player        Users     @relation("UserGamesPlayed", fields: [idPlayer], references: [id_user])
+  startplay     DateTime
+  is_fini       Boolean
+  pourcentage   Int
+  score         Int
 }

@@ -8,53 +8,69 @@ Class "Users" as Users{
 -first_name: String
 -last_name: String
 -age: Integer
--born: Date
+-birthday: DATE
 -email: String
 -passWord: String
 }
 
 /'abstract class "Users" as u2{}'/
 
-Class Player{
--status: Boolean
+Enum Status{
+    Player
+    Admin
 }
-Class Admin{}
 
-Class Entite{
+Class Player{
+-status: Status
+}
+Class Admin{
+-status: Status
+}
+
+Class Entites{
 - id_entite: Integer
 - nom_entite: String
 - categorie: String
-- is_ajoute: Integer
+- is_ajoute: Boolean
 }
-
-Class Relations{
-- id_relation
-- first_term: String
-- type_relation: String
-- second_term: String
-- valeur_relation: String
-}
-
 
 Class Game{
 -id_game: Integer
--first_term: String
--second_term: String
+-id_first_term: Integer
+-id_second_term: Integer
+-id_player: Integer
 -nb_fois_jouer: Integer
+-is_ajoute: Integer
 }
 
-Class RelationInGame{
-- idRelation: Integer
-- idGame: Integer
+Class DifferenceInGame{
+    - idTerme1: Integer
+    - idTerme2: Integer
+    - idDiff: Integer
+}
+
+Class Differences{
+    -id_diff: Integer
+    -type_diff: type_difference
+    -valeur_diff: Integer
+}
+
+Enum type_difference{
+    Lieu 
+    Caracteristique
+    Couleur
+    ...
 }
 
 
 
 class GamesPlayed{
--id: Integer
+-id_game: Integer
+-id_player: Integer
 -startplay: Date
+-is_fini: Boolean
+-pourcentage: Intger
 -score: Integer
--terme: String
 }
 
 
@@ -62,8 +78,12 @@ Users <|-- Player
 Users "1..*"  o-- "1"Game: create >
 Users <|--Admin
 
-Game "*" - "*"Relations : contain <
-(Relations, Game)"*" --  RelationInGame
+
+Differences"1" - "*"Game : contain <
+(Differences, Game)"*" -- DifferenceInGame
+
+
+Game "2" - "1..*"Entites : contain <
 
 Game "*" - "1"Player : play <
 (Player, Game)"*" --  GamesPlayed

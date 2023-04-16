@@ -4,6 +4,18 @@ DROP TABLE IF EXISTS Parties;
 DROP TABLE IF EXISTS Joueur;
 DROP TABLE IF EXISTS Relations;
 DROP TABLE IF EXISTS Entites;
+DROP TABLE IF EXISTS Users;
+
+CREATE TABLE Users (
+	id_users INT(10) NOT NULL AUTO_INCREMENT,
+	first_name VARCHAR(50),
+	last_name VARCHAR(50),
+	age INT(100),
+	birthday DATE,
+	email VARCHAR(100),
+	pass_word VARCHAR(100),
+	PRIMARY KEY (id_users)
+);
 
 CREATE TABLE Entites (
 	id_entite INT(10) NOT NULL AUTO_INCREMENT,
