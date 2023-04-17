@@ -1,16 +1,12 @@
 <template>
   <div>
-    You just signed out! <br>
-    <NuxtLink to="/">
-      <Button label="Home"></Button>
-    </NuxtLink>
-
+    You just signed out!
+      <NuxtLink to="/">
+      <Button class=" text-8xl p-button-text hover:bg-blue-800 " icon="" label="HOME"></Button>
+  </NuxtLink>
   </div>
 </template>
 
-<script lang="ts" setup>
-import {definePageMeta} from '#imports'
-
-
-definePageMeta({auth: false})
+<script setup lang="ts">
+definePageMeta({ auth: false })
 </script>
