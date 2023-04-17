@@ -15,11 +15,11 @@
 <script setup>
 
 
-import {definePageMeta, useSession} from '#imports'
+import {definePageMeta, useAuth} from '#imports'
 
 definePageMeta({auth: false})
 
-const {getSession, signIn, signOut} = useSession()
+const {signOut} = useAuth()
 let items;
 items = ref('');
 items = ref([
