@@ -1,4 +1,3 @@
-
 import PrimeVue from "primevue/config";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
@@ -15,8 +14,5 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.vueApp.component('Dropdown', Dropdown);
     nuxtApp.vueApp.component('Menubar', Menubar);
     nuxtApp.vueApp.component('Divider', Divider);
-
-
-    //other components that you need
 });
 

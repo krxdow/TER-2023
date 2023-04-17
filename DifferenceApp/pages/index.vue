@@ -17,21 +17,19 @@
                             <Button class=" text-8xl p-button-text hover:bg-red-800  " icon="" label="Jouer"></Button>
                         </li>
 
-                        <NuxtLink to="/partycreation">
-                            <li>
-                                <Button class=" text-6xl p-button-text hover:bg-yellow-800  " icon=""
-                                        label="Creer une Partie"></Button>
-                            </li>
-                        </NuxtLink>
-                    </ul>
-                </div>
-            </div>
-        </div>
+      <NuxtLink to="/partycreation">
+        <li>
+          <Button class=" text-6xl p-button-text hover:bg-yellow-800  " icon="" label="Creer une Partie"></Button>
+        </li>
+      </NuxtLink>
+    </ul>
     </div>
 </template>
 
-<script lang="ts" setup>
-
+<script>
+export default {
+  name: "index"
+}
 </script>
 
 <style scoped>

@@ -38,24 +38,33 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  accounts      Account[]
-  sessions      Session[]
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  frist_name String?
+  last_name  String?
+  born       DateTime
+  password   String
+  age        Int
+  // role       Role     @default(USER) //for mysql or postgres
+  Game       Game[]
 }
 
-model VerificationRequest {
-  id         String   @id @default(cuid())
-  identifier String
-  token      String   @unique
-  expires    DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+model Admin {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  frist_name String?
+  last_name  String?
+  born       DateTime
+  password   String
+  age        Int
+  // role       Role     @default(USER) //for mysql or postgres
+}
 
-  @@unique([identifier, token])
+model Game {
+  id             Int    @id @default(autoincrement())
+  fist_term      String
+  second_term    String
+  user           User?  @relation(fields: [user_id], references: [id])
+  user_id        Int?
+  number_of_play Int
 }

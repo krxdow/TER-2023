@@ -232,13 +232,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
-import MyMenuComp from "~/components/menuBar.vue";
-import * as cheerio from "cheerio";
-
-definePageMeta({
-  middleware: "auth",
-});
+import { prisma, diconnect, connect } from "../prisma/client.js";
 
 const messageErreur = "Terme non présent dans Rezo";
 
