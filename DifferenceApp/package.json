@@ -1,25 +1,46 @@
 {
   "private": true,
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "build": "nuxi build",
+    "dev": "nuxi dev",
+    "info": "nuxi info",
+    "generate": "nuxi generate",
+    "preview": "nuxi preview",
+    "module": "nuxi init -t module my-module",
+    "start": "node .output/server/index.mjs",
+    "test:ui": "vitest --ui",
+    "test:unit": "vitest --run --reporter verbose",
+    "test:coverage": "vitest run --coverage",
+    "story:dev": "histoire dev",
+    "story:build": "histoire build",
+    "story:preview": "histoire preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "migrate": "exec prisma migrate dev ",
+    "migrate:reset": "exec prisma migrate reset"
   },
   "devDependencies": {
-    "@sidebase/nuxt-auth": "^0.4.3",
-    "nuxt": "^3.2.2",
-    "prisma": "^4.12.0"
+    "@next-auth/prisma-adapter": "^1.0.5",
+    "@nuxt/devtools": "^0.4.0",
+    "@nuxtjs/eslint-config-typescript": "^12.0.0",
+    "@prisma/client": "^4.12.0",
+    "@sidebase/nuxt-auth": "0.5.0-rc.0",
+    "@types/node": "^18.15.11",
+    "next-auth": "^4.22.0",
+    "nuxt": "^3.4.1",
+    "prisma": "^4.12.0",
+    "typescript": "^5.0.3",
+    "vue-tsc": "^1.2.0"
   },
   "dependencies": {
-    "@prisma/client": "4.12.0",
-    "@sfxcode/nuxt-primevue": "^1.0.0",
-    "cheerio": "^1.0.0-rc.12",
-    "next-auth": "^4.20.1",
+    "@growthbunker/vuesocial": "^0.1.2",
+    "@sfxcode/nuxt-primevue": "^1.0.6",
+    "cheerio": "1.0.0-rc.12",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
-    "primevue": "^3.23.0",
-    "sass": "^1.58.2"
+    "primevue": "^3.26.1",
+    "sass": "^1.61.0",
+    "vue": "^3.2.47"
   }
 }
