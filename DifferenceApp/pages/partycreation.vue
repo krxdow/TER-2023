@@ -231,8 +231,13 @@
   </div>
 </template>
 
-<script setup>
-import { prisma, diconnect, connect } from "../prisma/client.js";
+<script setup lang="ts">
+//comment this line to avoid middleware auth
+definePageMeta({
+    middleware: 'auth'
+})
+
+//import { prisma, diconnect, connect } from "../prisma/client.js";
 
 const messageErreur = "Terme non présent dans Rezo";
 
