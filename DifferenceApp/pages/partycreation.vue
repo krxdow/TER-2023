@@ -238,7 +238,7 @@ definePageMeta({
 })
 
 //import { prisma, diconnect, connect } from "../prisma/client.js";
-
+import * as cheerio from 'cheerio';
 const messageErreur = "Terme non présent dans Rezo";
 
 const showMessageError1 = ref(false);
