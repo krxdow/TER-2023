@@ -1,7 +1,5 @@
 <template>
-  <MyMenuComp />
-
-  <SelectButton v-model="value" :options="options" aria-labelledby="basic" />
+  <menuBar/>
 
   <div class="">
     <h1>Création de partie</h1>
@@ -233,12 +231,13 @@
 
 <script setup lang="ts">
 //comment this line to avoid middleware auth
+
 definePageMeta({
     middleware: 'auth'
 })
 
-//import { prisma, diconnect, connect } from "../prisma/client.js";
 import * as cheerio from 'cheerio';
+
 const messageErreur = "Terme non présent dans Rezo";
 
 const showMessageError1 = ref(false);
