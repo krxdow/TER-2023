@@ -3,23 +3,22 @@
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GithubProvider from 'next-auth/providers/github'
 import {NuxtAuthHandler} from '#auth'
-import {PrismaAdapter} from '@next-auth/prisma-adapter'
-import { PrismaClient } from "@prisma/client"
-
-
-const prisma = new PrismaClient()
-
+//import {PrismaAdapter} from '@next-auth/prisma-adapter'
+//import {PrismaClient}  from "@prisma/client"
+//const prisma = new PrismaClient()
 
 
 export default NuxtAuthHandler({
     // A secret string you define, to ensure correct encryption
-
-    adapter: PrismaAdapter(prisma),
-
-
+   // adapter: PrismaAdapter(prisma),
     pages: {
+     /*   signIn: '/custom-signin',*/
         signIn: '/login',
+
+        signOut: '/'
+
     },
+
 
     providers: [
         // @ts-expect-error You need to use .default here for it to work during SSR. May be fixed via Vite at some point
@@ -65,5 +64,5 @@ export default NuxtAuthHandler({
         })
     ],
     //@ts-ignore
-    secret: useRuntimeConfig().authSecret
+    secret: process.env.AUTH_SECRET ?? 'test-123',
 })
