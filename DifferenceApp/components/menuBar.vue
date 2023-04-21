@@ -15,10 +15,7 @@
 <script setup>
 
 
-import {definePageMeta, useAuth} from '#imports'
-
 definePageMeta({auth: false})
-
 const {signOut} = useAuth()
 let items;
 items = ref('');
