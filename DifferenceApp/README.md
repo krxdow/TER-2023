@@ -3,8 +3,10 @@
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
 ## Setup
-Remove node_modules and package-lock.json (if you have npm) or yarn.lock (if you have yarn) before installing dependencies.  
+Remove **node_modules** and **package-lock.json** (if you have npm) or **yarn.lock**(if you have yarn)  
+before installing dependencies.  
 Make sure to install the dependencies:  
+recommendation to use npm or yarn as package manager
 
 
 ```bash
@@ -20,14 +22,13 @@ npm install -g pnpm
 pnpm install
 ```
 
-### dépendance non trouvée 
+
+### If use npm  at the beginning you must install the peer dependency alongside [nuxt-auth](https://sidebase.io/nuxt-auth/getting-started/installation):
+```bash
 
 ```bash
-yarn  i -D @sidebase/nuxt-auth
-yarn add next-auth
-yarn add  @next-auth/prisma-adapter
-
-yarn i
+pnpm i next-auth@4.21.1
+pnpm i
 ```
 
 ## Development Server
@@ -35,7 +36,8 @@ yarn i
 Start the development server on http://localhost:3000
 
 ```bash
-npm run dev
+pnpm run postinstall
+pnpm dlx prisma generate && nuxt dev 
 ```
 
 ## Production
@@ -65,7 +67,7 @@ npx prisma generate
 
 ### Prisma Migrate if changes in the schema (schema.prisma)
 ```bash
-npx prisma migrate dev --name init
+npx prisma migrate dev --name [name]
 ```
 
 ### Verify the database
