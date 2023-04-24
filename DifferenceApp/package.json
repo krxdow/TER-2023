@@ -11,7 +11,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^0.4.1",
+    "@nuxt/devtools": "^0.4.2",
     "@nuxt/eslint-config": "latest",
     "@sidebase/nuxt-auth": "0.6.0-alpha.1",
     "@types/node": "^18.15.13",
