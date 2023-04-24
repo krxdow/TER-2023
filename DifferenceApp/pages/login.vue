@@ -12,6 +12,9 @@
                 <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer"
                    @click="show = !show;udpateLabel(show)">Create today!</a>
             </div>
+
+
+
             <div v-if="!show" class="text-center mb-5 ">
                 <!--
                                 <img alt="Image" class="mb-3" height="50" src="images/blocks/logos/hyper.svg">
@@ -19,8 +22,9 @@
                 <div class="text-900 text-3xl font-medium mb-3">You have an account?</div>
                 <span class="text-600 font-medium line-height-3 font-medium no-underline ml-2 text-blue-500 cursor-pointer"
                       @click="show = !show;udpateLabel(show)">Sign in</span>
-            </div>
 
+            </div>
+            <divider  align="center" layout="horizontal"></divider>
 
             <form @submit.prevent>
                 <div class="text-center">
@@ -29,9 +33,8 @@
                     <InputText id="email1" v-model="username" class="w-full mb-3" type="email"/>
 
 
-                    <label v-if="!show" class="block text-900 font-medium mb-2" for="username1">Entrer un Non
-                        Utilisateur</label>
-                    <InputText v-if="!show" id="username1" v-model="username" class="w-full mb-3" type="email"/>
+                    <label v-if="!show" class="block text-900 font-medium mb-2" for="username1">Entrer un Email</label>
+                    <InputText v-if="!show" id="username1" v-model="email" class="w-full mb-3" type="email"/>
 
                     <label class="block text-900 font-medium mb-2" for="password1">{{ passwordLabel }}</label>
                     <InputText id="password1" v-model="password" :autocomplete="autocompleteValue" :type="inputType"
@@ -51,10 +54,10 @@
                 </div>
             </form>
             <div v-if="show">
-                <Button class="w-full" label="Sign In"  @click="signIn('credentials',{username,password, callbackUrl: route.query.callbackUrl })"></Button>
+                <Button class="w-full" label="Sign In"  @click="signIn('credentials',{username,password, callbackUrl: originalProtectedPagePatch })"></Button>
                 <Divider align="center" layout="horizontal"><b>OR</b></Divider>
                 <Button class="w-full" label="Sign In With Github"
-                        @click="signIn('github',{username,password, callbackUrl: $router.query.callbackUrl })"></Button>
+                        @click="signIn('github',{username,password, callbackUrl: originalProtectedPagePatch })"></Button>
             </div>
 
 
@@ -88,6 +91,8 @@ console.log("state",state)
 console.log("error",error)
 let inputType = ref('password')
 
+const originalProtectedPagePatch  = route.query.callbackUrl
+
 console.log("Route",route.query.callbackUrl)
 
 
@@ -106,20 +111,21 @@ async function addUsers(username, email, password) {
 
     let addedUser = null
 
-    if (username && email) {
+    if (email) {
         addedUser = await $fetch('/api/users', {
             method: 'POST',
             body: {
                 name: username,
                 email: email,
                 password: password
+
             }
         })
     }
 }
 
 async function udpateLabel(show) {
-    emailLabel.value = show ? 'Email' : 'Entrer un email';
+    emailLabel.value = show ? 'Email or Username' : 'Entrer un Nom Utilisateur';
     passwordLabel.value = show ? 'Password' : 'Entrer un mot de passe';
     inputType.value = show ? 'password' : 'text';
     autocompleteValue.value = show ? 'off' : 'new-password';
