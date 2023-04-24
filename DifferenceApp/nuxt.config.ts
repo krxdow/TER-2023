@@ -10,11 +10,6 @@ export default defineNuxtConfig({
     },
 
 
-    auth: {
-        origin: 'http://localhost:3000',
-        isEnabled: true,
-    },
-
     css: [
         'primevue/resources/themes/soho-dark/theme.css',
         'primevue/resources/primevue.css',
@@ -39,5 +34,4 @@ export default defineNuxtConfig({
         strict: true
     },
 
-    devtools: true
 })
