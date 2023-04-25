@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
+// API pour modifier un utilisateur dans la classe user
 export default defineEventHandler(async (event) => {
   console.log("update user by name");
   const body = await readBody(event);

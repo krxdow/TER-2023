@@ -35,10 +35,10 @@ model User {
   id            String    @id @default(uuid())
   name          String
   email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
+  emailVerified DateTime? @map("email_verified")        // date à laquelle le mail a été verifié 
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime  @default(now())               // moment ou l'utilsiateur a été créer ?
+  updatedAt     DateTime  @updatedAt                    // moment ou l'utilsiateur est mise à jour
   accounts      Account[]
   sessions      Session[]
 
@@ -75,8 +75,8 @@ model Game {
 model Entites {
   id_entite    Int     @id @default(autoincrement())
   nom_entite   String
-  categorie    String
-  is_ajoute    Boolean @default(false)
+  categorie    String?                          //possiblité que la categorie d'un mot soit possiblement nul car les utilisateurs ne crée pas leurs catégorie
+  is_ajoute    Boolean @default(false)          // attribut permettant de savoir si l'entité est ajouter par un utilisateur ou non
   entite1Games Game[]  @relation(name: "firstEntite") // une entite est présente en tant que premier terme dans plusieurs jeux
   entite2Games Game[]  @relation(name: "secondEntite") // une entite est présente en tant que second terme dans plusieurs jeux
 
