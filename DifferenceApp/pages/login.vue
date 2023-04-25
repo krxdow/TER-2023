@@ -29,7 +29,7 @@
             <form @submit.prevent>
                 <div class="text-center">
 
-                    <label class="block text-900 font-medium mb-2" for="email1">{{ emailLabel }}</label>
+                    <label class="block text-900 font-medium mb-2" for="email1">{{ usernameLabel }}</label>
                     <InputText id="email1" v-model="username" class="w-full mb-3" type="email"/>
 
 
@@ -57,7 +57,7 @@
                 <Button class="w-full" label="Sign In"  @click="signIn('credentials',{username,password, callbackUrl: originalProtectedPagePatch })"></Button>
                 <Divider align="center" layout="horizontal"><b>OR</b></Divider>
                 <Button class="w-full" label="Sign In With Github"
-                        @click="signIn('github',{username,password, callbackUrl: originalProtectedPagePatch })"></Button>
+                        @click="signIn('github',{callbackUrl: originalProtectedPagePatch })"></Button>
             </div>
 
 
@@ -74,44 +74,42 @@
 
 <script lang="ts" setup>
 definePageMeta({auth: false})
-
-
-const show = ref(true)
-let emailLabel = ref('');
-let passwordLabel = ref('');
-const password = ref('')
-
 const {signIn,state,error} = useAuth()
-
 const route = useRoute();
 
+const show = ref(true)
+let usernameLabel = ref('');
+let passwordLabel = ref('');
+const password = ref('')
+let inputType = ref('password')
 
 
+
+
+/*
 console.log("state",state)
 console.log("error",error)
-let inputType = ref('password')
+*/
+
 
 const originalProtectedPagePatch  = route.query.callbackUrl
 
-console.log("Route",route.query.callbackUrl)
 
 
 
 
 let autocompleteValue = ref('off')
 const email = ref('')
-
 const username = ref('')
-emailLabel.value = 'Email or Username';
+usernameLabel.value = 'Email or Username';
 passwordLabel.value = 'Password'
-console.log("username",username)
 
 
 async function addUsers(username, email, password) {
 
     let addedUser = null
 
-    if (email) {
+    if (username && email && password) {
         addedUser = await $fetch('/api/users', {
             method: 'POST',
             body: {
@@ -125,7 +123,7 @@ async function addUsers(username, email, password) {
 }
 
 async function udpateLabel(show) {
-    emailLabel.value = show ? 'Email or Username' : 'Entrer un Nom Utilisateur';
+    usernameLabel.value = show ? 'Email or Username' : 'Entrer un Nom Utilisateur';
     passwordLabel.value = show ? 'Password' : 'Entrer un mot de passe';
     inputType.value = show ? 'password' : 'text';
     autocompleteValue.value = show ? 'off' : 'new-password';
