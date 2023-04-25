@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   try {
     const resp = await prisma.user.delete({
       where: {
-        id_user: userId, // Pass the correct user ID to delete the user
+        id: userId, // Pass the correct user ID to delete the user
       },
     });
 

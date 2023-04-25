@@ -8,6 +8,7 @@ export default defineEventHandler(async (event) => {
         data: {
             name: body.name,
             email: body.email,
+            password: body.password,
         }
     });
     return { resp : resp}
