@@ -1,5 +1,5 @@
 <template>
-  <menuBar/>
+  <menuBar />
 
   <div class="">
     <h1>Création de partie</h1>
@@ -224,19 +224,29 @@
       class="flex flex-column"
       style="display: flex; justify-content: center; align-items: center"
     >
-      <Button class="" label="Validé la partie" />
+      <Button
+        class="p-button-icon-bottom mt-10"
+        label="Validé la partie"
+        @click="addGame(firstTerme, secondTerme)"
+      >
+      </Button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 //comment this line to avoid middleware auth
+/*definePageMeta({
+  middleware: "auth",
+});*/
 
-definePageMeta({
-    middleware: 'auth'
-})
+/*import { useAuth } from "@nuxtjs/auth-next";
+const { getSession } = useAuth();
+const session = await getSession();
 
-import * as cheerio from 'cheerio';
+const currentUserId = session?.user?.id;*/
+
+import * as cheerio from "cheerio";
 
 const messageErreur = "Terme non présent dans Rezo";
 
@@ -248,6 +258,8 @@ const isActiveErreur2 = ref(false);
 
 let firstTerme = ref("");
 let secondTerme = ref("");
+let firstTermeG = ref("");
+let secondTermeG = ref("");
 let firstTermeValue = ref("");
 let secondTermeValue = ref("");
 
@@ -526,6 +538,20 @@ function removeTodo(item) {
     listFirstItemOfUser.value = listFirstItemOfUser.value.filter(
       (t) => t !== listFirstItemOfUser.value[itemIndex2]
     );
+  }
+}
+
+async function addGame(firstTermeG, secondTermeG) {
+  let addedGame = null;
+
+  if (firstTerme && secondTerme) {
+    addedGame = await $fetch("/api/game", {
+      method: "POST",
+      body: {
+        firstTerme: firstTermeG,
+        secondTerme: secondTermeG,
+      },
+    });
   }
 }
 </script>

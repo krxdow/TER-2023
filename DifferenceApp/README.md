@@ -76,10 +76,8 @@ npx prisma migrate dev --name [name]
 sqlite3 .\prisma\dev.db
 ```
 
-show users table
-
 ```bash
-select * from "User";
+select * from user;
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

@@ -74,7 +74,7 @@ model Game {
 // Table sur les entités existantent
 model Entites {
   id_entite    Int     @id @default(autoincrement())
-  nom_entite   String
+  nom_entite   String  @unique
   categorie    String?                          //possiblité que la categorie d'un mot soit possiblement nul car les utilisateurs ne crée pas leurs catégorie
   is_ajoute    Boolean @default(false)          // attribut permettant de savoir si l'entité est ajouter par un utilisateur ou non
   entite1Games Game[]  @relation(name: "firstEntite") // une entite est présente en tant que premier terme dans plusieurs jeux
